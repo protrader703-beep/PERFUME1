@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Return Policy — Attar Store{% endblock %}
+
+{% block content %}
+<section id="return-policy-section">
+    <div class="section-inner">
+
+        <h1 id="return-policy-title">Return &amp; Refund Policy</h1>
+        <p id="policy-last-updated"><em>Last updated: June 2025</em></p>
+
+        <div id="policy-content">
+
+            <article id="policy-returns">
+                <h2>Returns</h2>
+                <p>
+                    We accept returns within <strong>7 days</strong> of delivery if the product 
+                    is unused, in its original packaging, and in the same condition as received.
+                </p>
+                <p>
+                    To initiate a return, please contact us at 
+                    <a href="mailto:support@attarstore.com">support@attarstore.com</a> 
+                    with your Order ID and reason for return.
+                </p>
+            </article>
+
+            <article id="policy-non-returnable">
+                <h2>Non-Returnable Items</h2>
+                <ul role="list">
+                    <li>Opened or used Attar bottles</li>
+                    <li>Items purchased on sale or discount</li>
+                    <li>Gift sets that have been opened</li>
+                </ul>
+            </article>
+
+            <article id="policy-refunds">
+                <h2>Refunds</h2>
+                <p>
+                    Once we receive and inspect the returned item, we will process your refund 
+                    within <strong>5–7 business days</strong> via the original UPI ID used for payment.
+                </p>
+            </article>
+
+            <article id="policy-damaged">
+                <h2>Damaged or Wrong Items</h2>
+                <p>
+                    If you received a damaged or wrong product, please email us within 
+                    <strong>48 hours</strong> of delivery with photos. We will arrange a 
+                    replacement or full refund at no extra cost.
+                </p>
+            </article>
+
+        </div>
+
+        <div id="policy-contact">
+            <p>
+                Questions? <a href="{% url 'store:contact' %}">Contact our support team.</a>
+            </p>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

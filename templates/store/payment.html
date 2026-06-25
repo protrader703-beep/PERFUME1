@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Complete Payment — Attar Store{% endblock %}
+
+{% block content %}
+<section id="payment-section">
+    <div class="section-inner">
+
+        <h1 id="payment-title">Complete Your Payment</h1>
+        <p id="payment-instructions">
+            Please scan the QR code below with any UPI app (Google Pay, PhonePe, Paytm, etc.) 
+            and pay the exact order amount. Then enter your transaction details below.
+        </p>
+
+        <div id="payment-layout">
+
+            <!-- Left: QR Code Display -->
+            <div id="payment-qr-col">
+                <div id="qr-box">
+                    <h2 id="qr-heading">Scan &amp; Pay via UPI</h2>
+                    
+                    <!-- IMPORTANT: Replace this image with your actual UPI QR Code -->
+                    <!-- Place your QR code image in: static/images/upi-qr-code.png  -->
+                    <div id="qr-image-wrapper">
+                        <img 
+                            id="upi-qr-image"
+                            src="https://via.placeholder.com/300x300.png?text=Upload+QR+Code+Here" 
+                            alt="UPI QR Code — Scan to Pay"
+                        />
+                    </div>
+
+                    <div id="upi-id-display">
+                        <p id="upi-id-label">UPI ID:</p>
+                        <!-- IMPORTANT: Replace with your actual UPI ID -->
+                        <p id="upi-id-value"><strong>yourname@upi</strong></p>
+                    </div>
+
+                    <p id="qr-instruction-text">
+                        After payment, enter your transaction ID below and submit.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Transaction ID Submission -->
+            <div id="payment-form-col">
+                <form id="payment-form" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div id="payment-amount-display">
+                        <p id="amount-label">Amount to Pay:</p>
+                        <p id="amount-value">₹{{ total_amount }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upi_transaction_id">
+                            UPI Transaction ID / UTR Number *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="upi_transaction_id" 
+                            name="upi_transaction_id" 
+                            required 
+                            maxlength="100"
+                            placeholder="e.g. 408317652345"
+                            class="form-input"
+                            aria-describedby="upi-id-hint"
+                        />
+                        <small id="upi-id-hint" class="form-hint">
+                            Find this in your UPI app under transaction history.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payment_screenshot">
+                            Payment Screenshot (Optional but Recommended)
+                        </label>
+                        <input 
+                            type="file" 
+                            id="payment_screenshot" 
+                            name="payment_screenshot" 
+                            accept="image/*"
+                            class="form-input-file"
+                        />
+                        <small class="form-hint">
+                            Upload a screenshot of your payment confirmation.
+                        </small>
+                    </div>
+
+                    <button type="submit" id="confirm-payment-btn" class="btn btn-primary btn-large btn-full-width">
+                        Confirm &amp; Place Order
+                    </button>
+
+                    <p id="payment-security-note">
+                        🔒 Your order will be manually verified by our team after payment confirmation.
+                    </p>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}

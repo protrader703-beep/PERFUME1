@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shop All Attars{% endblock %}
+
+{% block content %}
+<section id="shop-section">
+    <div class="section-inner">
+
+        <header id="shop-header">
+            <h1 id="shop-title">Our Collection</h1>
+            <p id="shop-subtitle">Explore all our premium Attar fragrances</p>
+        </header>
+
+        {% if products %}
+            <div id="shop-products-grid" class="products-grid" role="list">
+                {% for product in products %}
+                    <article class="product-card" role="listitem">
+                        <a href="{% url 'store:product_detail' slug=product.slug %}" class="product-card-link">
+                            <div class="product-card-image-wrapper">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-card-image" loading="lazy" />
+                                {% else %}
+                                    <div class="product-card-image-placeholder" aria-hidden="true"><span>No Image</span></div>
+                                {% endif %}
+                                {% if not product.is_in_stock %}
+                                    <span class="badge badge-out-of-stock">Out of Stock</span>
+                                {% endif %}
+                            </div>
+                            <div class="product-card-body">
+                                <h2 class="product-card-name">{{ product.name }}</h2>
+                                <p class="product-card-description">{{ product.short_description }}</p>
+                                <p class="product-card-price">₹{{ product.price }}</p>
+                            </div>
+                        </a>
+                        <div class="product-card-actions">
+                            {% if product.is_in_stock %}
+                                <a href="{% url 'store:add_to_cart' product_id=product.id %}" class="btn btn-add-to-cart">Add to Cart</a>
+                            {% else %}
+                                <button class="btn btn-disabled" disabled>Out of Stock</button>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div id="empty-shop-message">
+                <p>No products available yet. Please check back soon.</p>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us — Attar Store{% endblock %}
+
+{% block content %}
+<section id="contact-section">
+    <div class="section-inner">
+
+        <h1 id="contact-title">Contact Us</h1>
+        <p id="contact-subtitle">Have questions? We'd love to hear from you.</p>
+
+        <div id="contact-layout">
+
+            <!-- Contact Info -->
+            <address id="contact-info">
+                <h2>Get in Touch</h2>
+                <p>
+                    <strong>Email:</strong> 
+                    <a href="mailto:support@attarstore.com">support@attarstore.com</a>
+                </p>
+                <p><strong>Phone:</strong> +91 00000 00000</p>
+                <p><strong>Business Hours:</strong> Mon–Sat, 10am–7pm IST</p>
+            </address>
+
+            <!-- Contact Form -->
+            <div id="contact-form-wrapper">
+                <h2>Send a Message</h2>
+                <form id="contact-form" method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="contact-name">Your Name *</label>
+                        <input type="text" id="contact-name" name="name" required class="form-input" placeholder="Your full name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-email">Your Email *</label>
+                        <input type="email" id="contact-email" name="email" required class="form-input" placeholder="your@email.com" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-subject">Subject</label>
+                        <input type="text" id="contact-subject" name="subject" class="form-input" placeholder="What is this about?" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-message">Message *</label>
+                        <textarea id="contact-message" name="message" required rows="5" class="form-textarea" placeholder="Write your message here..."></textarea>
+                    </div>
+
+                    <button type="submit" id="contact-submit-btn" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}

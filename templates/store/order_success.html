@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Order Placed! — Attar Store{% endblock %}
+
+{% block content %}
+<section id="order-success-section">
+    <div class="section-inner">
+
+        <div id="success-icon" aria-hidden="true">✅</div>
+        <h1 id="success-title">Thank You for Your Order!</h1>
+        <p id="success-subtitle">
+            Your order has been placed successfully. We will verify your payment 
+            and dispatch your order within 24 hours.
+        </p>
+
+        <!-- Order Summary Card -->
+        <div id="order-summary-card" aria-labelledby="order-number-heading">
+            <h2 id="order-number-heading">Order #{{ order.id }}</h2>
+            
+            <div id="order-details-grid">
+                <div class="order-detail-row">
+                    <span class="order-detail-label">Order Status:</span>
+                    <span class="order-detail-value {{ order.get_status_display_class }}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+                <div class="order-detail-row">
+                    <span class="order-detail-label">Total Amount:</span>
+                    <span class="order-detail-value">₹{{ order.total_amount }}</span>
+                </div>
+                <div class="order-detail-row">
+                    <span class="order-detail-label">UPI Transaction ID:</span>
+                    <span class="order-detail-value">{{ order.upi_transaction_id }}</span>
+                </div>
+                <div class="order-detail-row">
+                    <span class="order-detail-label">Shipping To:</span>
+                    <span class="order-detail-value">
+                        {{ order.full_name }}, {{ order.address_line1 }}, 
+                        {{ order.city }}, {{ order.state }} — {{ order.pincode }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Items Ordered -->
+            <div id="order-items-list">
+                <h3>Items Ordered</h3>
+                <ul role="list">
+                    {% for item in order.items.all %}
+                        <li class="order-success-item">
+                            <span class="item-name">{{ item.product.name }}</span>
+                            <span class="item-qty">× {{ item.quantity }}</span>
+                            <span class="item-subtotal">₹{{ item.get_subtotal }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- What Happens Next -->
+        <div id="what-next-section">
+            <h2 id="what-next-heading">What Happens Next?</h2>
+            <ol id="what-next-steps" role="list">
+                <li>Our team will verify your UPI payment within a few hours.</li>
+                <li>Once verified, your order will be packed and dispatched.</li>
+                <li>You will receive a shipping update.</li>
+                <li>Track your order status in <a href="{% url 'accounts:profile' %}">My Profile</a>.</li>
+            </ol>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div id="success-cta-group">
+            <a href="{% url 'accounts:profile' %}" class="btn btn-primary">View My Orders</a>
+            <a href="{% url 'store:shop' %}" class="btn btn-outline">Continue Shopping</a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

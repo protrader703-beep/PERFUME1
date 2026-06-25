@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile — Attar Store{% endblock %}
+
+{% block content %}
+<section id="profile-section">
+    <div class="section-inner">
+
+        <h1 id="profile-title">My Profile</h1>
+
+        <div id="profile-layout">
+
+            <!-- Account Info Card -->
+            <div id="profile-info-card">
+                <h2>Account Details</h2>
+                <dl id="profile-details">
+                    <div class="profile-detail-row">
+                        <dt>Name:</dt>
+                        <dd>{{ user.get_full_name|default:"Not set" }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt>Username:</dt>
+                        <dd>{{ user.username }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt>Email:</dt>
+                        <dd>{{ user.email }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt>Phone:</dt>
+                        <dd>{{ user.userprofile.phone|default:"Not saved" }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt>Saved Address:</dt>
+                        <dd>{{ user.userprofile.get_full_address|default:"No address saved" }}</dd>
+                    </div>
+                </dl>
+            </div>
+
+        </div>
+
+        <!-- Order History -->
+        <div id="order-history-section">
+            <h2 id="order-history-heading">My Orders</h2>
+
+            {% if orders %}
+                <div id="orders-list">
+                    {% for order in orders %}
+                        <article class="order-history-card" id="order-card-{{ order.id }}">
+                            <header class="order-card-header">
+                                <h3 class="order-card-id">Order #{{ order.id }}</h3>
+                                <span class="order-card-status {{ order.get_status_display_class }}">
+                                    {{ order.get_status_display }}
+                                </span>
+                            </header>
+                            <div class="order-card-body">
+                                <p class="order-card-date">Placed on: {{ order.created_at|date:"d M Y, h:i A" }}</p>
+                                <p class="order-card-total">Total: ₹{{ order.total_amount }}</p>
+                                <p class="order-card-upi">UPI Ref: {{ order.upi_transaction_id }}</p>
+                            </div>
+                            <div class="order-card-items">
+                                <ul role="list">
+                                    {% for item in order.items.all %}
+                                        <li>{{ item.product.name }} × {{ item.quantity }} — ₹{{ item.get_subtotal }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p id="no-orders-message">
+                    You haven't placed any orders yet. 
+                    <a href="{% url 'store:shop' %}">Start shopping!</a>
+                </p>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

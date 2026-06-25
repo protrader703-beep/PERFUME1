@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} — Attar Store{% endblock %}
+{% block meta_description %}{{ product.short_description }}{% endblock %}
+
+{% block content %}
+<section id="product-detail-section">
+    <div class="section-inner">
+
+        <!-- Breadcrumb Navigation -->
+        <nav id="breadcrumb" aria-label="Breadcrumb">
+            <ol role="list">
+                <li><a href="{% url 'store:home' %}">Home</a></li>
+                <li aria-hidden="true"> / </li>
+                <li><a href="{% url 'store:shop' %}">Shop</a></li>
+                <li aria-hidden="true"> / </li>
+                <li aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+
+        <div id="product-detail-layout">
+
+            <!-- Left: Product Image -->
+            <div id="product-detail-image-col">
+                {% if product.image %}
+                    <img 
+                        id="product-detail-image"
+                        src="{{ product.image.url }}" 
+                        alt="{{ product.name }}"
+                    />
+                {% else %}
+                    <div id="product-detail-image-placeholder" aria-label="No image available">
+                        <span>No Image Available</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Right: Product Info -->
+            <div id="product-detail-info-col">
+
+                <h1 id="product-detail-name">{{ product.name }}</h1>
+                <p id="product-detail-price">₹{{ product.price }}</p>
+                <p id="product-detail-short-desc">{{ product.short_description }}</p>
+
+                <!-- Stock Status -->
+                <div id="product-stock-status">
+                    {% if product.is_in_stock %}
+                        <span id="in-stock-badge" class="badge badge-in-stock">✓ In Stock ({{ product.stock }} left)</span>
+                    {% else %}
+                        <span id="out-of-stock-badge" class="badge badge-out-of-stock">✗ Out of Stock</span>
+                    {% endif %}
+                </div>
+
+                <!-- Add to Cart -->
+                <div id="product-add-to-cart">
+                    {% if product.is_in_stock %}
+                        <a 
+                            href="{% url 'store:add_to_cart' product_id=product.id %}" 
+                            id="add-to-cart-btn"
+                            class="btn btn-primary btn-large"
+                        >
+                            Add to Cart
+                        </a>
+                    {% else %}
+                        <button id="add-to-cart-btn-disabled" class="btn btn-disabled btn-large" disabled aria-disabled="true">
+                            Currently Unavailable
+                        </button>
+                    {% endif %}
+                </div>
+
+                <!-- Full Description -->
+                <div id="product-detail-description">
+                    <h2 id="description-heading">About This Fragrance</h2>
+                    <div id="description-text">
+                        {{ product.description|linebreaks }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

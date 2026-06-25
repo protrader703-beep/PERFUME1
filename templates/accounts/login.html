@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Login — Attar Store{% endblock %}
+
+{% block content %}
+<section id="login-section">
+    <div class="section-inner auth-form-wrapper">
+
+        <h1 id="login-title">Welcome Back</h1>
+        <p id="login-subtitle">Sign in to your account to continue.</p>
+
+        <form id="login-form" method="POST" action="{% url 'accounts:login' %}" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" name="username" required class="form-input" placeholder="Your username" autofocus />
+            </div>
+
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" required class="form-input" placeholder="Your password" />
+            </div>
+
+            <div id="login-options">
+                <a href="{% url 'password_reset' %}" id="forgot-password-link">Forgot your password?</a>
+            </div>
+
+            <button type="submit" id="login-submit-btn" class="btn btn-primary btn-full-width">
+                Sign In
+            </button>
+        </form>
+
+        <p id="login-signup-link">
+            Don't have an account? <a href="{% url 'accounts:signup' %}">Create one free</a>
+        </p>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home — Attar Store{% endblock %}
+{% block meta_description %}Discover our collection of premium Attar and natural fragrances. Pure, long-lasting, luxury perfumes.{% endblock %}
+
+{% block content %}
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="hero-section" aria-label="Hero banner">
+        <div id="hero-content">
+            <h1 id="hero-headline">The Art of Pure Fragrance</h1>
+            <p id="hero-subheadline">
+                Discover our handcrafted collection of premium Attars &mdash; 
+                sourced from the finest natural ingredients.
+            </p>
+            <div id="hero-cta-group">
+                <a href="{% url 'store:shop' %}" id="hero-cta-primary" class="btn btn-primary">
+                    Explore Collection
+                </a>
+                <a href="{% url 'store:about' %}" id="hero-cta-secondary" class="btn btn-secondary">
+                    Our Story
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURED PRODUCTS ==================== -->
+    <section id="featured-section" aria-labelledby="featured-heading">
+        <div class="section-inner">
+            <header class="section-header">
+                <h2 id="featured-heading">Featured Fragrances</h2>
+                <p class="section-subtext">Hand-selected bestsellers from our collection</p>
+            </header>
+
+            {% if featured_products %}
+                <div id="featured-products-grid" class="products-grid" role="list">
+                    {% for product in featured_products %}
+                        <article class="product-card" role="listitem">
+                            <a href="{% url 'store:product_detail' slug=product.slug %}" class="product-card-link" aria-label="View {{ product.name }}">
+                                <div class="product-card-image-wrapper">
+                                    {% if product.image %}
+                                        <img 
+                                            src="{{ product.image.url }}" 
+                                            alt="{{ product.name }}" 
+                                            class="product-card-image"
+                                            loading="lazy"
+                                        />
+                                    {% else %}
+                                        <div class="product-card-image-placeholder" aria-hidden="true">
+                                            <span>No Image</span>
+                                        </div>
+                                    {% endif %}
+                                    {% if not product.is_in_stock %}
+                                        <span class="badge badge-out-of-stock" aria-label="Out of stock">Out of Stock</span>
+                                    {% endif %}
+                                </div>
+                                <div class="product-card-body">
+                                    <h3 class="product-card-name">{{ product.name }}</h3>
+                                    <p class="product-card-description">{{ product.short_description }}</p>
+                                    <p class="product-card-price">₹{{ product.price }}</p>
+                                </div>
+                            </a>
+                            <div class="product-card-actions">
+                                {% if product.is_in_stock %}
+                                    <a 
+                                        href="{% url 'store:add_to_cart' product_id=product.id %}" 
+                                        class="btn btn-add-to-cart"
+                                        aria-label="Add {{ product.name }} to cart"
+                                    >
+                                        Add to Cart
+                                    </a>
+                                {% else %}
+                                    <button class="btn btn-disabled" disabled aria-disabled="true">
+                                        Out of Stock
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+                <div id="featured-view-all">
+                    <a href="{% url 'store:shop' %}" class="btn btn-outline">View All Products</a>
+                </div>
+            {% else %}
+                <p id="no-featured-message">No featured products yet. Check back soon!</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- ==================== TRUST / FEATURE HIGHLIGHTS ==================== -->
+    <section id="trust-section" aria-labelledby="trust-heading">
+        <div class="section-inner">
+            <h2 id="trust-heading" class="visually-hidden">Why Choose Us</h2>
+            <div id="trust-features-grid">
+
+                <div class="trust-feature" id="trust-purity">
+                    <span class="trust-icon" aria-hidden="true">🌿</span>
+                    <h3 class="trust-feature-title">100% Pure Attar</h3>
+                    <p class="trust-feature-text">No alcohol. No synthetics. Only pure, natural fragrance oils.</p>
+                </div>
+
+                <div class="trust-feature" id="trust-shipping">
+                    <span class="trust-icon" aria-hidden="true">📦</span>
+                    <h3 class="trust-feature-title">Fast Delivery</h3>
+                    <p class="trust-feature-text">Pan-India shipping. Orders dispatched within 24 hours.</p>
+                </div>
+
+                <div class="trust-feature" id="trust-secure">
+                    <span class="trust-icon" aria-hidden="true">🔒</span>
+                    <h3 class="trust-feature-title">Secure UPI Payment</h3>
+                    <p class="trust-feature-text">Simple and safe payment via UPI. No card details needed.</p>
+                </div>
+
+                <div class="trust-feature" id="trust-returns">
+                    <span class="trust-icon" aria-hidden="true">↩️</span>
+                    <h3 class="trust-feature-title">Easy Returns</h3>
+                    <p class="trust-feature-text">Not satisfied? We offer a hassle-free return process.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

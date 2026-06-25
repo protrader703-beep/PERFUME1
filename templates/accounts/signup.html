@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account — Attar Store{% endblock %}
+
+{% block content %}
+<section id="signup-section">
+    <div class="section-inner auth-form-wrapper">
+
+        <h1 id="signup-title">Create Your Account</h1>
+        <p id="signup-subtitle">Join us to track orders and save your details.</p>
+
+        <form id="signup-form" method="POST" action="{% url 'accounts:signup' %}" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="signup-first-name">First Name</label>
+                <input type="text" id="signup-first-name" name="first_name" class="form-input" placeholder="Your first name" />
+            </div>
+
+            <div class="form-group">
+                <label for="signup-last-name">Last Name</label>
+                <input type="text" id="signup-last-name" name="last_name" class="form-input" placeholder="Your last name" />
+            </div>
+
+            <div class="form-group">
+                <label for="signup-email">Email Address *</label>
+                <input type="email" id="signup-email" name="email" required class="form-input" placeholder="your@email.com" />
+            </div>
+
+            <div class="form-group">
+                <label for="signup-username">Username *</label>
+                <input type="text" id="signup-username" name="username" required class="form-input" placeholder="Choose a username" />
+            </div>
+
+            <div class="form-group">
+                <label for="signup-password1">Password *</label>
+                <input type="password" id="signup-password1" name="password1" required class="form-input" placeholder="Create a strong password" />
+            </div>
+
+            <div class="form-group">
+                <label for="signup-password2">Confirm Password *</label>
+                <input type="password" id="signup-password2" name="password2" required class="form-input" placeholder="Repeat your password" />
+            </div>
+
+            <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-full-width">
+                Create Account
+            </button>
+        </form>
+
+        <p id="signup-login-link">
+            Already have an account? <a href="{% url 'accounts:login' %}">Log in here</a>
+        </p>
+
+    </div>
+</section>
+{% endblock %}

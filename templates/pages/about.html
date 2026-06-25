@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}About Us — Attar Store{% endblock %}
+
+{% block content %}
+<section id="about-section">
+    <div class="section-inner">
+
+        <h1 id="about-title">About Us</h1>
+
+        <div id="about-content">
+
+            <div id="about-story">
+                <h2>Our Story</h2>
+                <p>
+                    We are passionate about the ancient art of Attar — the purest form of 
+                    fragrance, crafted without alcohol and synthetics. Our journey began with 
+                    a single goal: to bring the royal fragrances of the Middle East and South 
+                    Asia to every home.
+                </p>
+            </div>
+
+            <div id="about-promise">
+                <h2>Our Promise</h2>
+                <ul role="list">
+                    <li>100% pure, natural Attar oils</li>
+                    <li>No alcohol, no artificial chemicals</li>
+                    <li>Sourced directly from trusted distilleries</li>
+                    <li>Long-lasting fragrances — a little goes a long way</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div id="about-cta">
+            <a href="{% url 'store:shop' %}" class="btn btn-primary">Explore Our Collection</a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

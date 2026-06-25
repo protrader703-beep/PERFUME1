@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your Cart — Attar Store{% endblock %}
+
+{% block content %}
+<section id="cart-section">
+    <div class="section-inner">
+
+        <h1 id="cart-title">Your Shopping Cart</h1>
+
+        {% if cart_items %}
+
+            <div id="cart-layout">
+
+                <!-- Cart Items Table -->
+                <div id="cart-items-col">
+                    <table id="cart-table" role="table" aria-label="Shopping cart items">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Unit Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                                <tr class="cart-item-row" id="cart-item-{{ item.product.id }}">
+
+                                    <!-- Product Info -->
+                                    <td class="cart-item-product">
+                                        {% if item.product.image %}
+                                            <img 
+                                                src="{{ item.product.image.url }}" 
+                                                alt="{{ item.product.name }}"
+                                                class="cart-item-image"
+                                            />
+                                        {% endif %}
+                                        <div class="cart-item-details">
+                                            <a href="{% url 'store:product_detail' slug=item.product.slug %}" class="cart-item-name">
+                                                {{ item.product.name }}
+                                            </a>
+                                        </div>
+                                    </td>
+
+                                    <!-- Unit Price -->
+                                    <td class="cart-item-price">₹{{ item.product.price }}</td>
+
+                                    <!-- Quantity Update Form -->
+                                    <td class="cart-item-quantity">
+                                        <form 
+                                            method="POST" 
+                                            action="{% url 'store:update_cart' product_id=item.product.id %}"
+                                            class="quantity-form"
+                                        >
+                                            {% csrf_token %}
+                                            <input 
+                                                type="number" 
+                                                name="quantity" 
+                                                value="{{ item.quantity }}" 
+                                                min="1" 
+                                                max="{{ item.product.stock }}"
+                                                class="quantity-input"
+                                                aria-label="Quantity for {{ item.product.name }}"
+                                            />
+                                            <button type="submit" class="btn btn-small" aria-label="Update quantity">Update</button>
+                                        </form>
+                                    </td>
+
+                                    <!-- Subtotal -->
+                                    <td class="cart-item-subtotal">₹{{ item.subtotal }}</td>
+
+                                    <!-- Remove Button -->
+                                    <td class="cart-item-remove">
+                                        <a 
+                                            href="{% url 'store:remove_from_cart' product_id=item.product.id %}"
+                                            class="btn btn-remove"
+                                            aria-label="Remove {{ item.product.name }} from cart"
+                                            onclick="return confirm('Remove this item from your cart?')"
+                                        >
+                                            ✕ Remove
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Cart Summary -->
+                <aside id="cart-summary-col" aria-labelledby="cart-summary-heading">
+                    <div id="cart-summary-box">
+                        <h2 id="cart-summary-heading">Order Summary</h2>
+                        <div id="cart-summary-details">
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span id="cart-total-display">₹{{ cart_total }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping</span>
+                                <span>Free</span>
+                            </div>
+                            <hr class="summary-divider" />
+                            <div class="summary-row summary-row-total">
+                                <strong>Total</strong>
+                                <strong id="cart-grand-total">₹{{ cart_total }}</strong>
+                            </div>
+                        </div>
+                        <a href="{% url 'store:checkout' %}" id="proceed-to-checkout-btn" class="btn btn-primary btn-full-width">
+                            Proceed to Checkout →
+                        </a>
+                        <a href="{% url 'store:shop' %}" id="continue-shopping-link">
+                            ← Continue Shopping
+                        </a>
+                    </div>
+                </aside>
+
+            </div>
+
+        {% else %}
+
+            <!-- Empty Cart Message -->
+            <div id="empty-cart-message">
+                <p id="empty-cart-text">Your cart is empty.</p>
+                <a href="{% url 'store:shop' %}" id="empty-cart-cta" class="btn btn-primary">
+                    Start Shopping
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

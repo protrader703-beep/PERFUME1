@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout — Attar Store{% endblock %}
+
+{% block content %}
+<section id="checkout-section">
+    <div class="section-inner">
+
+        <h1 id="checkout-title">Checkout</h1>
+        <p id="checkout-subtitle">Please fill in your shipping details below.</p>
+
+        <!-- Checkout Form — submits to payment page -->
+        <form 
+            id="checkout-form" 
+            method="POST" 
+            action="{% url 'store:checkout' %}"
+            novalidate
+        >
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="alert alert-error" style="background: rgba(255,0,0,0.1); border: 1px solid red; padding: 1rem; margin-bottom: 2rem; color: #ff6b6b;">
+                <strong>Please correct the following errors:</strong>
+                <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div id="checkout-layout">
+
+                <!-- Left: Shipping Details Form -->
+                <div id="checkout-form-col">
+                    <fieldset id="fieldset-personal">
+                        <legend>Personal Information</legend>
+
+                        <div class="form-group">
+                            <label for="full_name">Full Name *</label>
+                            <input 
+                                type="text" 
+                                id="full_name" 
+                                name="full_name" 
+                                required 
+                                maxlength="255"
+                                placeholder="As it should appear on shipping label"
+                                value="{{ form.full_name.value|default:'' }}"
+                                class="form-input"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required 
+                                placeholder="your@email.com"
+                                value="{{ form.email.value|default:'' }}"
+                                class="form-input"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone" 
+                                required 
+                                maxlength="15"
+                                placeholder="10-digit mobile number"
+                                value="{{ form.phone.value|default:'' }}"
+                                class="form-input"
+                            />
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="fieldset-address">
+                        <legend>Shipping Address</legend>
+
+                        <div class="form-group">
+                            <label for="address_line1">Address Line 1 *</label>
+                            <input 
+                                type="text" 
+                                id="address_line1" 
+                                name="address_line1" 
+                                required 
+                                placeholder="House No., Street Name"
+                                value="{{ form.address_line1.value|default:'' }}"
+                                class="form-input"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address_line2">Address Line 2</label>
+                            <input 
+                                type="text" 
+                                id="address_line2" 
+                                name="address_line2" 
+                                placeholder="Area, Landmark (optional)"
+                                class="form-input"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City *</label>
+                                <input 
+                                    type="text" 
+                                    id="city" 
+                                    name="city" 
+                                    required 
+                                    placeholder="City"
+                                    value="{{ form.city.value|default:'' }}"
+                                    class="form-input"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State *</label>
+                                <input 
+                                    type="text" 
+                                    id="state" 
+                                    name="state" 
+                                    required 
+                                    placeholder="State"
+                                    value="{{ form.state.value|default:'' }}"
+                                    class="form-input"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pincode">PIN Code *</label>
+                            <input 
+                                type="text" 
+                                id="pincode" 
+                                name="pincode" 
+                                required 
+                                maxlength="10"
+                                pattern="[0-9]{6}"
+                                placeholder="6-digit PIN code"
+                                value="{{ form.pincode.value|default:'' }}"
+                                class="form-input"
+                            />
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Right: Order Summary -->
+                <aside id="checkout-summary-col" aria-labelledby="checkout-summary-heading">
+                    <div id="checkout-summary-box">
+                        <h2 id="checkout-summary-heading">Your Order</h2>
+                        
+                        {% for item in cart_items %}
+                        <div class="checkout-item" style="display:flex; justify-content:space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                            <span>₹{{ item.subtotal }}</span>
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="checkout-total" style="display:flex; justify-content:space-between; padding: 1rem 0; font-weight: bold; font-size: 1.2rem; border-top: 2px solid var(--gold, #c9a96e); margin-top: 0.5rem;">
+                            <span>Total</span>
+                            <span>₹{{ cart_total }}</span>
+                        </div>
+                        
+                        <p id="checkout-summary-hint">
+                            <a href="{% url 'store:cart' %}">← Edit Cart</a>
+                        </p>
+                    </div>
+                </aside>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div id="checkout-submit-area">
+                <button type="submit" id="proceed-to-payment-btn" class="btn btn-primary btn-large">
+                    Proceed to Payment →
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</section>
+{% endblock %}
